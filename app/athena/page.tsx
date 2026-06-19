@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
+import { useAI } from "@/lib/useAI";
 import {
   CameraIcon,
   FolderIcon,
@@ -24,6 +25,7 @@ const AthenaMainPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { generate } = useAI();
 
   // Autoscroll to bottom whenever messages change
   useEffect(() => {
@@ -55,8 +57,7 @@ const AthenaMainPage = () => {
       const assistantMessage: Message = {
         id: crypto.randomUUID(),
         role: "assistant",
-        content:
-          "This is a placeholder response from Athena. Wire up your API here.",
+        content: await generate({ prompt: trimmed }),
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } finally {
@@ -86,10 +87,13 @@ const AthenaMainPage = () => {
       {/* Nav */}
       <nav className="w-full bg-lite-secondary border-b border-border sticky top-0 z-10 py-4 flex items-center justify-between px-4">
         <Logo />
-        <div className="flex items-center gap-4 text-[14px]">
-          <Link href={""}>Docs</Link>
-          <Link href={""}>About</Link>
-          <Link href={""}>Github</Link>
+        <div className="flex items-center text-[14px]">
+          <Link href={"/docs"}>
+            <Button variant={"link"}>Docs</Button>
+          </Link>
+          <Link target="_blank" href={"https://github.com/Newton-R/Athena"}>
+            <Button variant={"link"}>Github</Button>
+          </Link>
         </div>
       </nav>
 
