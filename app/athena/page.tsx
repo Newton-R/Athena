@@ -3,15 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 import { useAI } from "@/lib/useAI";
+import { useChat } from "@ai-sdk/react";
 import {
   CameraIcon,
+  CopyIcon,
   FolderIcon,
   ForwardIcon,
   ImageIcon,
   Loader2Icon,
+  RefreshCcw,
+  StopCircleIcon,
 } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { motion as m } from "motion/react";
 
 type Message = {
   id: string;
@@ -20,57 +26,62 @@ type Message = {
 };
 
 const AthenaMainPage = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  // const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { generate } = useAI();
+
+  const { messages, sendMessage, status, error, regenerate, stop } = useChat();
 
   // Autoscroll to bottom whenever messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
+  }, [messages, status === "submitted"]);
 
-  const handleSend = async () => {
-    const trimmed = input.trim();
-    if (!trimmed || isLoading) return;
-
-    const userMessage: Message = {
-      id: crypto.randomUUID(),
-      role: "user",
-      content: trimmed,
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsLoading(true);
-
-    // Reset textarea height
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
+  useEffect(() => {
+    if (error) {
+      toast.error(`${error.message}`);
     }
-
-    try {
-      // TODO: replace with your actual API call
-      await new Promise((res) => setTimeout(res, 1200));
-      const assistantMessage: Message = {
-        id: crypto.randomUUID(),
-        role: "assistant",
-        content: await generate({ prompt: trimmed }),
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [error]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSend();
+      sendMessage({ text: input });
     }
   };
+
+  //   const trimmed = input.trim();
+  //   if (!trimmed || isLoading) return;
+
+  //   const userMessage: Message = {
+  //     id: crypto.randomUUID(),
+  //     role: "user",
+  //     content: trimmed,
+  //   };
+
+  //   setMessages((prev) => [...prev, userMessage]);
+  //   setInput("");
+  //   setIsLoading(true);
+
+  //   // Reset textarea height
+  //   if (textareaRef.current) {
+  //     textareaRef.current.style.height = "auto";
+  //   }
+
+  //   try {
+  //     // TODO: replace with your actual API call
+  //     await new Promise((res) => setTimeout(res, 1200));
+  //     const assistantMessage: Message = {
+  //       id: crypto.randomUUID(),
+  //       role: "assistant",
+  //       content: await generate({ prompt: trimmed }),
+  //     };
+  //     setMessages((prev) => [...prev, assistantMessage]);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   // Auto-resize textarea
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -116,26 +127,52 @@ const AthenaMainPage = () => {
         ) : (
           <div className="flex flex-col gap-4 max-w-full mx-auto w-full">
             {messages.map((msg) => (
-              <div
+              <m.div
                 key={msg.id}
                 className={`flex ${
                   msg.role === "user" ? "justify-end" : "justify-start"
                 }`}
               >
-                <div
-                  className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed max-w-[80%] whitespace-pre-wrap ${
+                <m.div
+                  initial={"initial"}
+                  whileHover={"hovered"}
+                  className={`px-4 py-2.5 rounded-2xl text-sm relative leading-relaxed max-w-[80%] whitespace-pre-wrap ${
                     msg.role === "user"
                       ? "bg-primary text-primary-foreground rounded-br-sm"
                       : "bg-zinc-100 text-foreground border border-border rounded-bl-sm"
                   }`}
                 >
-                  {msg.content}
-                </div>
-              </div>
+                  {msg.parts.map((part, i) => {
+                    switch (part.type) {
+                      case "text":
+                        return <span key={`part.text-${i}`}>{part.text}</span>;
+                    }
+                  })}
+                  <m.div
+                    variants={{
+                      initial: { opacity: 0 },
+                      hovered: { opacity: 1 },
+                    }}
+                    transition={{ duration: 0.4 }}
+                    className="absolute left-0 pt-1 text-muted-foreground  h-fit bottom-0 translate-y-full flex items-center "
+                  >
+                    <Button variant={"ghost"} size={"icon-sm"}>
+                      <CopyIcon size={18} />
+                    </Button>
+                    <Button
+                      onClick={() => regenerate({ messageId: msg.id })}
+                      variant={"ghost"}
+                      size={"icon-sm"}
+                    >
+                      <RefreshCcw size={18} />
+                    </Button>
+                  </m.div>
+                </m.div>
+              </m.div>
             ))}
 
             {/* Loading indicator */}
-            {isLoading && (
+            {status === "submitted" && (
               <div className="flex justify-start">
                 <div className="px-4 py-2.5 rounded-2xl rounded-bl-sm bg-zinc-100 border border-border text-sm text-muted-foreground flex items-center gap-2">
                   <Loader2Icon size={14} className="animate-spin" />
@@ -151,7 +188,14 @@ const AthenaMainPage = () => {
       </div>
 
       {/* Input bar */}
-      <div className="sticky bottom-0 w-full border-t border-border bg-line-gradient p-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          sendMessage({ text: input });
+          setInput("");
+        }}
+        className="sticky bottom-0 w-full border-t border-border bg-line-gradient p-4"
+      >
         <div className="w-full border-border rounded-xs bg-background border flex flex-col mx-auto">
           <textarea
             ref={textareaRef}
@@ -180,15 +224,38 @@ const AthenaMainPage = () => {
             <Button
               className="cursor-pointer"
               size="lg"
-              onClick={handleSend}
-              disabled={!input.trim() || isLoading}
+              type={
+                status !== "submitted" && status !== "streaming"
+                  ? "submit"
+                  : "button"
+              }
+              onClick={() => {
+                if (status === "streaming") {
+                  stop();
+                }
+              }}
+              disabled={!input.trim()}
             >
-              <ForwardIcon size={18} />
-              {isLoading ? "Sending…" : "Send"}
+              {status === "submitted" ? (
+                <span className="flex items-center justify-center gap-2">
+                  <ForwardIcon size={18} />
+                  Sending...
+                </span>
+              ) : status === "streaming" ? (
+                <span className="flex items-center justify-center gap-2">
+                  <StopCircleIcon size={18} />
+                  Stop
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <ForwardIcon size={18} />
+                  Send
+                </span>
+              )}
             </Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
