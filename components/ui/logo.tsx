@@ -1,5 +1,6 @@
 import { Omega } from "lucide-react";
 import React from "react";
+import { GreekName } from "./greekName";
 
 export const Logo = () => {
   return (
@@ -7,7 +8,7 @@ export const Logo = () => {
       <div className="text-white size-7 rounded-xs bg-black flex items-center justify-center font-bold">
         <Omega size={18} />
       </div>
-      <span className="font-bold">Αθηνά</span>
+      <GreekName />
     </div>
   );
 };

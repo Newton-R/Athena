@@ -99,7 +99,7 @@ const AthenaMainPage = () => {
       <nav className="w-full bg-lite-secondary border-b border-border sticky top-0 z-10 py-4 flex items-center justify-between px-4">
         <Logo />
         <div className="flex items-center text-[14px]">
-          <Link href={"/docs"}>
+          <Link href={"/docs/intro"}>
             <Button variant={"link"}>Docs</Button>
           </Link>
           <Link target="_blank" href={"https://github.com/Newton-R/Athena"}>

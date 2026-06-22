@@ -1,0 +1,107 @@
+# Agentic AI & Vercel AI SDK
+
+Athena is built on two core foundations Agentic AI and the Vercel AI SDK.
+This section breaks down what agentic AI actually is,
+how it differs from the chatbots you already know,
+and how the Vercel AI SDK gives us the tools to build it in a Next.js environment.
+
+## What is Agentic AI
+
+Agentic AI refers to AI systems that can autonomously plan, decide, and take
+actions to achieve a goal without needing a human to guide every single step.
+
+Unlike traditional AI that simply responds to a prompt, an agentic AI system
+can break down a complex goal into smaller tasks, execute them in sequence,
+use tools, react to results, and adjust its approach along the way.
+
+## How it differs from Chatbots
+
+A chatbot like the basic version of ChatGPT is **reactive** you send a message,
+it sends one back. That's the full loop. It has no memory of what it did before,
+no ability to take actions in the world, and no concept of working toward a goal
+over multiple steps.
+
+An agentic AI system is **proactive**. Given a goal like:
+
+<TextBlock>
+  "Analyze this codebase, identify performance bottlenecks, and suggest fixes"
+</TextBlock>
+
+A chatbot stops at the answer. An agent will:
+
+- Read the codebase files
+- Run analysis tools
+- Identify the bottlenecks
+- Generate the fixes
+- Verify the fixes work
+- Report back with a summary
+
+The key difference is **autonomy over multiple steps**. A chatbot completes
+one turn. An agent completes a mission. Some example of real world AI agents we have [Github Copilot](https://github.com/copilot) & [Cursor Agent](https://cursor.com/agents)
+
+## Agentic AI Development
+
+Agentic AI development is the practice of building AI systems that can autonomously execute multi-step tasks using tools,
+memory, and decision-making rather than just responding to a single prompt.
+
+As a developer it means you're not just sending a message to an AI and displaying the response.
+You're building a system where the AI can:
+
+- [Use tools](/) : Like searching the web, reading files, writing code, calling APIs
+- **Plan** : break a complex goal into smaller steps and decide the order to execute them
+- **React** : look at the result of each step and decide what to do next based on it
+- **Loop** : keep going until the goal is achieved, not just until one response is generated
+
+So instead of building a chatbot that answers questions, you're building an autonomous system that completes missions.
+
+For Athena specifically, that means when a user describes a project idea, Athena doesn't just reply with suggestions
+it runs through a structured pipeline:
+analyzing requirements, picking a tech stack, generating a roadmap, breaking it into milestones, all autonomously in one run.
+
+## How Agents Work Internally
+
+At the core of every agentic AI system is a loop. It's often called the
+**agent loop** and it's what separates an agent from a regular AI response.
+
+Here's what happens inside that loop:
+
+1. **Receive a goal** :
+   The agent receives a high level goal from the user. Not a question a mission.
+   Something like "plan a full stack project for a task management app."
+
+2. **Plan** :
+   The agent breaks the goal down into smaller steps and decides which tools
+   it needs to use to achieve them.
+
+3. **Act** :
+   The agent executes the first step calling a tool, reading a file,
+   searching the web, writing code, whatever the step requires.
+
+4. **Observe** :
+   The agent looks at the result of that action. Did it work? Did it return
+   useful information? Did something go wrong?
+
+5. **Decide** :
+   Based on what it observed, the agent decides what to do next. It might
+   move to the next step, retry the current one, or adjust its plan entirely.
+
+6. **Repeat** :
+   Steps 3 to 5 repeat until the goal is achieved or the agent determines
+   it cannot complete the task.
+
+This loop is what gives agents their power. A chatbot runs this cycle
+exactly once. An agent runs it as many times as it needs to.
+
+## Vercel AI SDK
+
+The Vercel AI SDK is an open-source TypeScript library built by [Vercel](https://vercel.com/) that
+makes it easy to build AI-powered applications across any JavaScript framework
+React, [Next.js](https://nextjs.org/docs), Svelte, Vue, and more. In this documentation we focus
+specifically on its [Next.js](https://nextjs.org/docs) implementation as that is what Athena is built with.
+
+Before it existed, integrating AI into a [Next.js](https://nextjs.org/docs) app meant manually calling
+OpenAI or Gemini APIs, handling streaming responses yourself, building your
+own tool calling system, managing conversation history manually, and writing
+a lot of boilerplate just to get a basic AI feature working.
+
+The Vercel AI SDK abstracts all of that away.

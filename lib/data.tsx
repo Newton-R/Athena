@@ -76,24 +76,25 @@ export const tools = [
     image: "/typescript.svg",
     tags: ["Type Safety", "Scalable Code", "Developer Experience"],
   },
-  // {
-  //   name: "Tailwind CSS",
-  //   image: "/tailwind.svg",
-  //   tags: ["Styling", "Responsive UI", "Fast Development"],
-  // },
+  {
+    name: "Prisma",
+    image: "/prisma.png",
+    tags: ["ORM", "Database Management", "Type Safe"],
+  },
+  {
+    name: "Tailwind CSS",
+    image: "/tailwind.svg",
+    tags: ["Styling", "Responsive UI", "Fast Development"],
+  },
   // {
   //   name: "Shadcn UI",
   //   image: "/shadcn.svg",
   //   tags: ["UI Components", "Accessible", "Customizable"],
   // },
-  // {
-  //   name: "PostgreSQL",
-  //   image: "/postgres.svg",
-  //   tags: ["Database", "Data Storage", "Scalable"],
-  // },
-  // {
-  //   name: "Prisma",
-  //   image: "/prisma.svg",
-  //   tags: ["ORM", "Database Management", "Type Safe"],
-  // },
+  {
+    name: "PostgreSQL",
+    image: "/postgres.svg",
+    tags: ["Database", "Data Storage", "Scalable"],
+  },
+  //
 ];
