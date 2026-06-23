@@ -189,9 +189,9 @@ export const DocsSideBar = () => {
             </Link>
           </span>
         </div>
-        <Button size={"icon-sm"} variant={"outline"}>
+        {/* <Button size={"icon-sm"} variant={"outline"}>
           <SunIcon size={18} />
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

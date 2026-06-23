@@ -1,6 +1,7 @@
 import { DocsSideBar } from "@/components/docs/sidebar";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
+import { CircleAlertIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -11,14 +12,21 @@ export default function DocsLayout({
 }) {
   return (
     <main className="bg-secondary">
-      <div className="bg-zinc-50 w-full max-w-6xl relative flex flex-col border-l border-r border-border mx-auto">
+      <div className="w-screen h-screen text-center flex md:hidden items-center justify-center flex-col gap-2">
+        <CircleAlertIcon size={12} />
+        <p>Sorry not compatible with mobile devices</p>
+      </div>
+      <div className="bg-zinc-50 hidden w-full max-w-6xl relative md:flex flex-col border-l border-r border-border mx-auto">
         <div className="w-full h-(--nav-height) sticky top-0 bg-lite-secondary/70 z-30 flex items-center justify-between backdrop-blur-xs border-b border-border px-4">
           <Logo />
-          <div>
+          <div className="flex items-center gap-2">
             <Link href={"/athena"}>
               <Button variant={"link"} className={""}>
                 Athena
               </Button>
+            </Link>
+            <Link target="_blank" href={"https://github.com/Newton-R/Athena"}>
+              <Button variant={"link"}>Github</Button>
             </Link>
           </div>
         </div>
