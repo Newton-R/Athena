@@ -4,6 +4,134 @@ This section covers
 what the SDK gives you out of the box, and why it was the right choice for building
 an agentic system like Athena.
 
-## Installation
+## Creating your Next.js Application
 
-<CodeBlock>pnpm add shiki</CodeBlock>
+<WarningBlock>
+  Throughout this documentation we use the **App Router** the modern Next.js
+  router built on React Server Components, Suspense, and Server Functions. It is
+  the recommended way to build Next.js applications and is what Athena is built
+  on. If you are familiar with the Pages Router, note that the App Router works
+  differently and the two should not be mixed.
+</WarningBlock>
+
+To create a new Next.js application run the following command:
+
+<InstallationBlock singleCommand={"pnpm create next-app@latest my-ai-app"} />
+
+<WarningBlock>
+  During setup make sure to select **Yes** when prompted for App Router. The
+  default setup also enables TypeScript and Tailwind CSS which is what we use
+  throughout this project.
+</WarningBlock>
+
+Navigate to the newly created directory:
+
+<InstallationBlock singleCommand={"cd my-ai-app"} />
+
+For a full walkthrough of the installation and project structure, refer to the
+[Official Next.js installation guide](https://nextjs.org/docs/app/getting-started/installation).
+
+## Install Dependencies
+
+Install the core packages needed to build AI-powered features in your Next.js app:
+
+<InstallationBlock module={"ai @ai-sdk/react zod"} />
+
+### Configure your AI Gateway API key
+
+Create a <KBD>`.env.local`</KBD> file at the root of your project and add your AI provider
+API key. In this documentation we use Google Gemini as our provider:
+
+<InstallationBlock singleCommand={"touch .env.local"} />
+
+Add your AI api key to your <KBD>.env.local</KBD> file.
+
+<InstallationBlock
+  value={"GOOGLE_GENERATIVE_AI_API_KEY=XXXXXXXXX"}
+  file={".env.local"}
+/>
+
+You can get your Gemini API key from the [Google AI Studio](https://aistudio.google.com/app/apikey).
+
+Make sure to add <KBD>.env.local</KBD> to your <KBD>.gitignore</KBD> so your API key is never
+committed to version control.
+
+## Create a Route Handler
+
+Create a route handler, <KBD>app/api/chat/route.ts</KBD> and add the following code:
+
+<RoutehandlerCodeSnippet />
+
+### How this Works
+
+This is a Next.js API route it's the server side of your AI chat. When your
+frontend sends a message, it hits this endpoint, the AI processes it, and streams
+the response back in real time.
+
+Breaking it down line by line:
+
+- **Receiving the messages**
+
+<CodeSnippetBlock
+  children="const { messages }: { messages: UIMessage[] } = await req.json();"
+  justview
+/>
+
+When the user sends a message from the frontend, it arrives here as a list of
+all the messages in the conversation so far not just the latest one. This is
+how the AI knows the full context of the conversation.
+
+- **Converting the messages**
+
+<CodeSnippetBlock
+  children="messages: await convertToModelMessages(messages);"
+  justview
+/>
+
+The frontend sends messages in a UI friendly format. `convertToModelMessages`
+transforms them into the format the AI model actually understands before
+sending them over.
+
+- **Streaming the response**
+
+<CodeSnippetBlock
+  children="const result = streamText({ model: 'google/gemini-3-pro-preview', ...});"
+  justview
+/>
+
+Instead of waiting for the AI to finish generating the full response before
+sending it back, `streamText` sends each word back to the frontend as soon
+as it is generated just like you see in ChatGPT where the text appears
+word by word.
+
+- **Sending it back**
+
+<CodeSnippetBlock
+  children="return result.toUIMessageStreamResponse(); "
+  justview
+/>
+
+This packages the stream into a format the frontend can read and display in real
+time.
+
+So the full flow is:
+
+- Frontend posts to this route
+- AI generates a response word by word
+- Frontend displays it as it arrives.
+
+## Setting up the UI
+
+With the API route ready, the frontend side is straightforward. The Vercel AI
+SDK gives you a `useChat` hook that handles everything sending messages,
+receiving the streamed response, and managing the conversation history
+
+Please install library <KBD>Lucide React</KBD> to continue with the UI setup:
+
+<InstallationBlock module={"lucide-react"} />
+
+We have a pre built UI boilerplate to facilitate the learning process. Just paste this code into your <KBD>/app/page.tsx</KBD>
+
+<Boilerplateui />
+
+With all this you should have a basic chatbot setup !!

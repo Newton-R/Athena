@@ -15,6 +15,7 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.2.9",
+    "@shikijs/transformers": "^4.2.0",
     "@types/mdx": "^2.0.14",
     "ai": "^6.0.208",
     "class-variance-authority": "^0.7.1",

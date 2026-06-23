@@ -9,7 +9,17 @@ import Link from "next/link";
 import { KBD } from "./components/ui/kbd";
 import { TextBlock } from "./components/ui/textblock";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { CodeBlock } from "./components/ui/code-block";
+import { CodeSnippetBlock } from "./components/ui/code-block";
+import InstallationBlock from "./components/docs/installationBlock";
+import { WarningBlock } from "./components/docs/warningblock";
+import { RoutehandlerCodeSnippet } from "./components/docs/codesnippets/routehandler";
+import {
+  Boilerplateui,
+  ButtonStatesUI,
+  SampleMessagesMap,
+  SendMessageSnippet,
+  UIMessageType,
+} from "./components/docs/codesnippets/boilerplateui";
 
 const components: MDXComponents = {};
 
@@ -22,7 +32,15 @@ export function useMDXComponents(): MDXComponents {
     IntroHeader,
     KBD,
     TextBlock,
-    CodeBlock,
+    CodeSnippetBlock,
+    InstallationBlock,
+    WarningBlock,
+    RoutehandlerCodeSnippet,
+    Boilerplateui,
+    SendMessageSnippet,
+    UIMessageType,
+    SampleMessagesMap,
+    ButtonStatesUI,
     h1: ({ children }) => (
       <h1 className="font-bold text-3xl w-full">{children}</h1>
     ),
@@ -35,6 +53,11 @@ export function useMDXComponents(): MDXComponents {
         >
           {children}
         </h2>
+      );
+    },
+    h3: ({ children }) => {
+      return (
+        <h3 className="text-xl font-bold mt-6 mb-4 w-full ">{children}</h3>
       );
     },
     li: ({ children }) => {
@@ -55,7 +78,7 @@ export function useMDXComponents(): MDXComponents {
         </ul>
       );
     },
-    p: ({ children }) => <p className="mt-2">{children}</p>,
+    p: ({ children }) => <p className="mt-4">{children}</p>,
     a: ({ href, children, ...props }) => {
       const isExternal = href?.startsWith("http") || href?.startsWith("https");
 
@@ -75,7 +98,7 @@ export function useMDXComponents(): MDXComponents {
 
       return (
         <Link
-          className="text-link text-[14px] cursor-pointer"
+          className="text-link underline cursor-pointer"
           href={href ?? "#"}
           {...props}
         >

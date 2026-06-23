@@ -16,7 +16,7 @@ interface SideLink {
 }
 
 export const DocsSideBar = () => {
-  const [isOpen, setIsOpen] = useState<number[]>([0]);
+  const [isOpen, setIsOpen] = useState<number[]>([1]);
   const pathName = usePathname();
   const links: SideLink[] = [
     {
@@ -52,9 +52,27 @@ export const DocsSideBar = () => {
       ],
     },
     {
-      mainHead: "Vercel AI SDK",
+      mainHead: "Vercel AI SDK / Basic Chatbot",
       link: "vercel",
-      internal_links: [{ label: "Installation", href: "#installation" }],
+      internal_links: [
+        {
+          label: "Creating a Next.js App",
+          href: "#creating-your-next.js-application",
+        },
+        { label: "Dependencies", href: "#install-dependencies" },
+        { label: "Route Handler", href: "#create-a-route-handler" },
+        { label: "UI Setup", href: "#setting-up-the-ui" },
+      ],
+    },
+    {
+      mainHead: "useChat( )",
+      link: "useChat",
+      internal_links: [
+        { label: "useChat", href: "#what-is-usechat" },
+        { label: "sendMessage", href: "#sendmessage" },
+        { label: "messages", href: "#messages" },
+        { label: "status", href: "#status" },
+      ],
     },
   ];
   return (
@@ -66,11 +84,12 @@ export const DocsSideBar = () => {
         </span>
       </div>
       {/* Navigation links */}
-      <div className="flex flex-col overflow-y-auto flex-1">
+      <div className="flex flex-col overflow-y-auto chat-scroll flex-1">
         {links.map((link, i) => {
           const currentLink = isOpen.includes(i);
           return (
             <div
+              key={i}
               className={cn(
                 "flex flex-col border-b border-border",
                 currentLink && "pb-3",
@@ -84,9 +103,8 @@ export const DocsSideBar = () => {
                     setIsOpen((prev) => [...prev, i]);
                   }
                 }}
-                key={i}
                 className={cn(
-                  "w-full p-2 bg-lite-secondary transition-colors duration-200 cursor-pointer hover:bg-white flex gap-2 items-center",
+                  "w-full p-2 bg-lite-secondary text-[14px] transition-colors duration-200 cursor-pointer hover:bg-white flex gap-2 items-center",
                   currentLink && "bg-secondary hover:bg-zinc-50",
                 )}
               >
@@ -142,7 +160,7 @@ export const DocsSideBar = () => {
                         >
                           <div className="h-px bg-muted-foreground w-2" />
 
-                          <a className="">{internal.label}</a>
+                          <span className="">{internal.label}</span>
                         </Link>
                       </m.span>
                     );
@@ -162,7 +180,11 @@ export const DocsSideBar = () => {
           </Avatar>
           <span className="mt-0">
             <GreekName /> was built by <br />
-            <Link href={""} className="font-bold hover:underline">
+            <Link
+              href={"https://www.newtonraul.me/"}
+              target="_blank"
+              className="font-bold hover:underline"
+            >
               Newton Raul
             </Link>
           </span>

@@ -158,7 +158,7 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #ffffff; /* ✅ matches your white bg — looks invisible */
+  background-color: #7a7a7a; /* ✅ matches your white bg — looks invisible */
   border-radius: 999px;
 }
 
@@ -179,6 +179,21 @@ h4,
 h5,
 h6 {
   scroll-margin-top: var(--nav-height);
+}
+
+/* globals.css */
+.shiki code {
+  counter-reset: line;
+}
+
+.shiki code .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: #4b5563;
 }
 @layer base {
   * {

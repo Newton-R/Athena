@@ -11,7 +11,7 @@ export const KBD = ({
   return (
     <kbd
       className={cn(
-        "px-1.5 py-0.5 border border-border rounded bg-muted font-mono",
+        "px-1.5 py-0.5 border border-border rounded bg-secondary font-mono",
         className,
       )}
     >
