@@ -78,3 +78,38 @@ The status has 4 states that indicate different information about a request:
 - **ready** : Shows an idle state
 
 <ButtonStatesUI />
+
+## error
+
+The hook returns an <KBD>error</KBD> object that captures anything that goes
+wrong during a request such as network failures, invalid API keys, rate limits, or
+model errors.
+
+<KBD>error</KBD> is either an <KBD>Error</KBD> object or <KBD>undefined</KBD>.
+You can use it to display an error message to the user when something goes
+wrong:
+
+<ErrorBlock />
+
+## regenerate
+
+The <KBD>regenerate</KBD> function allows you to re-run the AI response for a specific
+message. This is useful when the user is not happy with the response and wants
+a fresh one without having to retype their message.
+
+It takes a <KBD>messageId</KBD> the id of the assistant message you want to regenerate:
+
+<RegenerateBlock />
+
+## stop
+
+The <KBD>stop</KBD> function cancels the current AI response mid-stream. This is useful
+when the response is taking too long or the user decides they no longer need it.
+
+<StopBlock />
+
+<WarningBlock>
+  When **stop** is called the current partial response is kept in the messages
+  list it is not discarded. So the user can still see how far the response got
+  before it was cancelled.
+</WarningBlock>

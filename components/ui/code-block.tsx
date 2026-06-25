@@ -41,7 +41,7 @@ export async function CodeSnippetBlock({
           />
         </div>
         <div
-          className="[&>pre]:p-4 [&>pre]:w-full [&>pre]:max-h-130 [&>pre]:max-w-205.75 [&>pre]:overflow-hidden [&>pre]:flex-1  [&>pre]:text-[14px]"
+          className="[&>pre]:p-4 [&>pre]:w-full [&>pre]:max-h-130 [&>pre]:max-w-205.75 [&>pre]:overflow-x-auto [&>pre]:overflow-hidden [&>pre]:flex-1  [&>pre]:text-[14px]"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
@@ -52,7 +52,7 @@ export async function CodeSnippetBlock({
     return (
       <div className="relative group my-4">
         <div
-          className="[&>pre]:p-4 [&>pre]:text-[14px] [&>pre]:rounded-lg"
+          className="[&>pre]:p-4 [&>pre]:text-[14px] [&>pre]:max-w-205.75 [&>pre]:rounded-lg"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
@@ -63,10 +63,10 @@ export async function CodeSnippetBlock({
     <div className="relative group my-4">
       <CopyButton
         text={children}
-        className="bg-transparent absolute right-2 top-4 hover:bg-secondary w-fit rounded-md px-2.5"
+        className="bg-transparent absolute right-2 top-2 hover:bg-secondary w-fit rounded-md px-2.5"
       />
       <div
-        className="[&>pre]:p-4 [&>pre]:w-full [&>pre]:flex-1 [&>pre]:overflow-hidden [&>pre]:max-h-100 [&>pre]:text-[14px] [&>pre]:rounded-lg"
+        className="[&>pre]:p-4 [&>pre]:w-full [&>pre]:max-w-205.75 [&>pre]:flex-1 [&>pre]:overflow-hidden [&>pre]:max-h-100 [&>pre]:text-[14px] [&>pre]:rounded-lg"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>

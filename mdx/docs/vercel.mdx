@@ -56,6 +56,29 @@ You can get your Gemini API key from the [Google AI Studio](https://aistudio.goo
 Make sure to add <KBD>.env.local</KBD> to your <KBD>.gitignore</KBD> so your API key is never
 committed to version control.
 
+## Google Provider
+
+The Vercel AI SDK is provider agnostic, meaning it works with OpenAI, Anthropic,
+Mistral, and more. In this documentation we use Google Gemini as our provider.
+
+Install the Google provider package:
+
+<InstallationBlock module={"@ai-sdk/google"} />
+
+Then import and initialize it in your [API route](#create-a-route-handler):
+
+<CodeSnippetBlock children="import { google } from '@ai-sdk/google'" />
+
+<WarningBlock>
+  The provider automatically picks up your{" "}
+  <KBD>GOOGLE_GENERATIVE_AI_API_KEY</KBD> from your <KBD>.env.local</KBD> file
+  so no extra configuration is needed. You can then pass a Gemini model directly
+  to your [route handler](#create-a-route-handler)`:
+</WarningBlock>
+
+For a full list of available models and providers accessible by the SDK refer to the
+[Google AI SDK documentation](https://ai-sdk.dev/docs/foundations/providers-and-models).
+
 ## Create a Route Handler
 
 Create a route handler, <KBD>app/api/chat/route.ts</KBD> and add the following code:

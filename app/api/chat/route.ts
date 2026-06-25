@@ -1,11 +1,6 @@
+import { convertToModelMessages, streamText, UIMessage } from "ai";
+import { NextRequest } from "next/server";
 import { google } from "@ai-sdk/google";
-import {
-  convertToModelMessages,
-  generateText,
-  streamText,
-  UIMessage,
-} from "ai";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { messages }: { messages: UIMessage[] } = await req.json();

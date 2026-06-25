@@ -205,3 +205,73 @@ export const page = () => {
 export const ButtonStatesUI = () => {
   return <CodeSnippetBlock justview children={ButtonStates} />;
 };
+
+const errorCode = `'use client';
+import { useChat } from '@ai-sdk/react';
+
+export const page = () => {
+  const { error } = useChat();
+  return (
+   <>
+    ...................
+    {error && (
+      <div className='text-sm text-red-500 px-4 py-2'>
+        Something went wrong: {error.message}
+      </div>
+    )}
+    ...................
+   </>
+  )};`;
+
+export const ErrorBlock = () => {
+  return <CodeSnippetBlock justview children={errorCode} />;
+};
+
+const regenerateblock = `'use client';
+import { useChat } from '@ai-sdk/react';
+
+export const page = () => {
+  const { messages, regenerate } = useChat();
+  return (
+   <>
+    ...................
+    {messages.map((message) => (
+        <div key={message.id}>
+            <strong>{message.role}:</strong>
+
+            {message.parts.map((part, index) =>
+            part.type === "text" ? (
+                <p key={index}>{part.text} 
+                <button onClick={() => regenerate(message.id)}>Retry</button></p>
+            ) : null
+            )}
+        </div>
+        ))}
+    ...................
+   </>
+  )}; `;
+
+export const RegenerateBlock = () => {
+  return <CodeSnippetBlock justview children={regenerateblock} />;
+};
+
+const stopblock = `'use client';
+import { useChat } from '@ai-sdk/react';
+
+export const page = () => {
+  const { stop, status } = useChat();
+  return (
+   <>
+    ...................
+    <button
+      type='submit'
+      onClick={() => { if (status === 'streaming') stop() }}>
+      {status === 'streaming' ? 'Stop' : 'Send'}
+    </button>
+    ...................
+   </>
+  )}; `;
+
+export const StopBlock = () => {
+  return <CodeSnippetBlock justview children={stopblock} />;
+};

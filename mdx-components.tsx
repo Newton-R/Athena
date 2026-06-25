@@ -16,8 +16,11 @@ import { RoutehandlerCodeSnippet } from "./components/docs/codesnippets/routehan
 import {
   Boilerplateui,
   ButtonStatesUI,
+  ErrorBlock,
+  RegenerateBlock,
   SampleMessagesMap,
   SendMessageSnippet,
+  StopBlock,
   UIMessageType,
 } from "./components/docs/codesnippets/boilerplateui";
 
@@ -41,6 +44,9 @@ export function useMDXComponents(): MDXComponents {
     UIMessageType,
     SampleMessagesMap,
     ButtonStatesUI,
+    ErrorBlock,
+    RegenerateBlock,
+    StopBlock,
     h1: ({ children }) => (
       <h1 className="font-bold text-3xl w-full">{children}</h1>
     ),

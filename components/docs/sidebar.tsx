@@ -60,6 +60,7 @@ export const DocsSideBar = () => {
           href: "#creating-your-next.js-application",
         },
         { label: "Dependencies", href: "#install-dependencies" },
+        { label: "Google Provider", href: "#google-provider" },
         { label: "Route Handler", href: "#create-a-route-handler" },
         { label: "UI Setup", href: "#setting-up-the-ui" },
       ],
@@ -72,6 +73,9 @@ export const DocsSideBar = () => {
         { label: "sendMessage", href: "#sendmessage" },
         { label: "messages", href: "#messages" },
         { label: "status", href: "#status" },
+        { label: "error", href: "#error" },
+        { label: "regenerate", href: "#regenerate" },
+        { label: "stop", href: "#stop" },
       ],
     },
   ];
