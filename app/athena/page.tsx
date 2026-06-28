@@ -18,6 +18,8 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion as m } from "motion/react";
+import { AskedQuestions, Question, QuestionsPart } from "@/lib/types";
+import QuestionsBlock from "@/components/ui/chat/QuestionsBlock";
 
 type Message = {
   id: string;
@@ -30,6 +32,9 @@ const AthenaMainPage = () => {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [current, setCurrent] = useState(0);
 
   const { messages, sendMessage, status, error, regenerate, stop } = useChat();
 
@@ -48,6 +53,7 @@ const AthenaMainPage = () => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage({ text: input });
+      setInput("");
     }
   };
 
@@ -125,7 +131,7 @@ const AthenaMainPage = () => {
             </p>
           </div>
         ) : (
-          <div className="flex flex-col gap-4 max-w-full mx-auto w-full">
+          <div className="flex flex-col gap-6 max-w-full mx-auto w-full">
             {messages.map((msg) => (
               <m.div
                 key={msg.id}
@@ -136,16 +142,55 @@ const AthenaMainPage = () => {
                 <m.div
                   initial={"initial"}
                   whileHover={"hovered"}
-                  className={`px-4 py-2.5 rounded-2xl text-sm relative leading-relaxed max-w-[80%] whitespace-pre-wrap ${
+                  className={`px-4 py-2.5 rounded-2xl text-sm relative leading-relaxed whitespace-pre-wrap ${
                     msg.role === "user"
-                      ? "bg-primary text-primary-foreground rounded-br-sm"
-                      : "bg-zinc-100 text-foreground border border-border rounded-bl-sm"
+                      ? "bg-primary max-w-[80%] text-primary-foreground rounded-br-sm"
+                      : "w-full md:max-w-[80%] text-foreground rounded-bl-sm"
                   }`}
                 >
                   {msg.parts.map((part, i) => {
                     switch (part.type) {
                       case "text":
                         return <span key={`part.text-${i}`}>{part.text}</span>;
+                    }
+                    switch (part.type) {
+                      case "tool-questionsTools":
+                        const toolpart = part as QuestionsPart;
+                        if (!toolpart.input) return null;
+                        if (toolpart.state !== "output-available") return null;
+
+                        const StoreChoices = ({
+                          id,
+                          option,
+                        }: {
+                          id: string;
+                          option: string;
+                        }) => {
+                          const updatedAnswers = { ...answers, [id]: option };
+
+                          if (current === toolpart.input.questions.length - 1) {
+                            const summary = toolpart.input.questions
+                              .map((q) => `${q.question}: ${answers[q.id]}`)
+                              .join("\n");
+                            sendMessage({ text: summary });
+                            setAnswers({});
+                            setCurrent(0);
+                          } else {
+                            setAnswers(updatedAnswers);
+                            setCurrent((prev) => prev + 1);
+                          }
+                        };
+
+                        return (
+                          <QuestionsBlock
+                            onClick={({ id, option }) =>
+                              StoreChoices({ id: id, option: option })
+                            }
+                            current={current}
+                            key={i}
+                            questions={toolpart.input.questions}
+                          />
+                        );
                     }
                   })}
                   <m.div
@@ -234,7 +279,7 @@ const AthenaMainPage = () => {
                   stop();
                 }
               }}
-              disabled={!input.trim()}
+              disabled={!input.trim() && status !== "streaming"}
             >
               {status === "submitted" ? (
                 <span className="flex items-center justify-center gap-2">
