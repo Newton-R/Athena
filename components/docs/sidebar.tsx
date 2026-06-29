@@ -78,6 +78,24 @@ export const DocsSideBar = () => {
         { label: "stop", href: "#stop" },
       ],
     },
+    {
+      mainHead: "Week One",
+      link: "weekOne",
+      internal_links: [
+        {
+          label: "Overview",
+          href: "#week-1",
+        },
+        {
+          label: "Concepts Learned",
+          href: "#concepts-learned",
+        },
+        {
+          label: "Features Added",
+          href: "#features-added",
+        },
+      ],
+    },
   ];
   return (
     <div className="w-70 border-r shrink-0 h-[calc(100vh-var(--nav-height))] border-border flex top-(--nav-height) flex-col sticky left-0">

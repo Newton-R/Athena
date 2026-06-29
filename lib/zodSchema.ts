@@ -20,3 +20,14 @@ export const AIQuestionsOutputSchema = z.object({
     }),
   ),
 });
+
+export const ProjectOverviewSchema = z.object({
+  goals_data: z.object({
+    problem_statement: z.string().describe("Understood problem statement"),
+    product_vision: z
+      .string()
+      .describe("The goal the vision behind the project"),
+    goals: z.array(z.string()),
+    success_metric: z.array(z.string()),
+  }),
+});

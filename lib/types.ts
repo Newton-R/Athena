@@ -18,3 +18,10 @@ export interface QuestionsPart {
     | "input-streaming"
     | "output-error";
 }
+
+export interface ProjectOverview {
+  problem_statement: string;
+  product_vision: string;
+  goals: string[];
+  success_metric: string[];
+}

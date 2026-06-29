@@ -18,7 +18,12 @@ import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { motion as m } from "motion/react";
-import { AskedQuestions, Question, QuestionsPart } from "@/lib/types";
+import {
+  AskedQuestions,
+  ProjectOverview,
+  Question,
+  QuestionsPart,
+} from "@/lib/types";
 import QuestionsBlock from "@/components/ui/chat/QuestionsBlock";
 
 type Message = {
@@ -152,11 +157,12 @@ const AthenaMainPage = () => {
                     switch (part.type) {
                       case "text":
                         return <span key={`part.text-${i}`}>{part.text}</span>;
-                    }
-                    switch (part.type) {
+
+                      // questions tool ui
                       case "tool-questionsTools":
                         const toolpart = part as QuestionsPart;
                         if (!toolpart.input) return null;
+
                         if (toolpart.state !== "output-available") return null;
 
                         const StoreChoices = ({
@@ -190,6 +196,24 @@ const AthenaMainPage = () => {
                             key={i}
                             questions={toolpart.input.questions}
                           />
+                        );
+
+                      case "tool-projectOverview":
+                        console.log({ overview_part: part });
+
+                        const overview = part.input as ProjectOverview;
+                        if (!part.input || part.state !== "output-available")
+                          return null;
+
+                        return (
+                          <div className="p-4 flex flex-col gap-6">
+                            <h2 className="font-bold text-2xl">
+                              Project Overview
+                            </h2>
+                            <div className="flex flex-col gap-4 bg-green-300 p-4">
+                              {overview.problem_statement}
+                            </div>
+                          </div>
                         );
                     }
                   })}

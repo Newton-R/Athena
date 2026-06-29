@@ -5,6 +5,7 @@ const docs: Record<string, () => Promise<any>> = {
   intro: () => import("@/mdx/docs/intro.mdx"),
   vercel: () => import("@/mdx/docs/vercel.mdx"),
   useChat: () => import("@/mdx/docs/useChat.mdx"),
+  weekOne: () => import("@/mdx/docs/weekOne.mdx"),
 };
 
 export async function generateStaticParams() {

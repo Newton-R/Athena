@@ -1,0 +1,40 @@
+# Week One: Foundation
+
+## Overview
+
+Week 1 was about getting familiar with the fundamentals no complex agent logic, no database,
+just understanding how the Vercel AI SDK works and getting Athena's foundation in place.
+
+By the end of the week the chat interface was working, text was streaming, basic tools were wired up,
+and the documentation system was live. Small wins, but everything that comes after builds on this.
+
+It was also the week I realized how much thinking goes into building an AI product before writing a single line of agent logic.
+
+## Concepts Learned
+
+A breakdown of the core concepts I encountered and studied during the week
+not deep dives, just enough context to understand why each one matters and how it fits into building Athena.
+
+[Text Streaming](/docs/vercel#create-a-route-handler) : How the Vercel AI SDK streams responses token by token from the model to the UI instead of waiting for the full response
+
+**useChat() hook** : How it manages messages, API calls, loading states, error handling and conversation memory out of the box
+
+**Tool Calling** : How to define tools that the model can decide to call during a conversation
+
+**MDX** : Writing documentation with Markdown that supports React components inline
+
+**The Vercel AI SDK** : Understanding the overall structure of the SDK, how the frontend and backend connect, and how requests flow from the UI to the model and back
+
+## Features Implemented
+
+**Chat Interface** : The main conversation UI where users interact with Athena
+
+**Text Streaming** : Responses stream in real time instead of waiting for the full response
+
+**useChat() Integration** : Replaced manual message handling with the Vercel AI SDK's built in hook
+
+**System Prompting** : Defined Athena's personality, behavior and thinking process through a system prompt
+
+**Basic Tool Calling** : Wired up initial tools that the model can call during a conversation
+
+**MDX Documentation System** : Set up the docs with MDX support for writing interactive documentation

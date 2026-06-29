@@ -1,7 +1,7 @@
 import { convertToModelMessages, stepCountIs, streamText, UIMessage } from "ai";
 import { NextRequest } from "next/server";
 import { google } from "@ai-sdk/google";
-import { askProjectQuestions } from "@/lib/tools";
+import { askProjectQuestions, projectOverviewGeneration } from "@/lib/tools";
 import { athena } from "@/lib/athena";
 
 export async function POST(req: NextRequest) {
@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
     system: athena,
     tools: {
       questionsTools: askProjectQuestions,
+      projectOverview: projectOverviewGeneration,
     },
     stopWhen: stepCountIs(5),
     onError: (err) => {
